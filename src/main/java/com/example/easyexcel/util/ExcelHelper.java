@@ -52,7 +52,7 @@ public class ExcelHelper {
      * @param <T>           泛型
      * @return
      */
-    public static <T> Object asyncReadExcel(InputStream inputStream, ExcelTypeEnum excelTypeEnum, ReadListener<T> excelListener, Class clazz) {
+    public static <T> void asyncReadExcel(InputStream inputStream, ExcelTypeEnum excelTypeEnum, ReadListener<T> excelListener, Class clazz) {
         EasyExcelFactory.read(inputStream, clazz, excelListener).excelType(excelTypeEnum).sheet().doRead();
     }
 
