@@ -6,6 +6,7 @@ import com.alibaba.excel.support.ExcelTypeEnum;
 import com.example.easyexcel.listener.UserAnalysisEventListener;
 import com.example.easyexcel.model.UserModel;
 import com.example.easyexcel.util.ExcelHelper;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,11 @@ public class ExcelContoller {
     @PostMapping("/asyncReadExcel")
     public Object asyncReadExcel(@RequestParam("uploadingFile") MultipartFile uploadingFile) throws IOException {
         ExcelHelper.asyncReadExcel(uploadingFile.getInputStream(), ExcelTypeEnum.XLSX, new UserAnalysisEventListener(), UserModel.class);
+        return "success";
+    }
+
+    @GetMapping("/log")
+    public String log() {
         return "success";
     }
 }
