@@ -5,7 +5,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import ReadExcel from '@/pages/ReadExcel.vue';
 
 export const routes = [, {
-    path: '/readexcel',
+    path: '/read_excel',
     name: 'ReadExcel',
     component: ReadExcel,
 },
