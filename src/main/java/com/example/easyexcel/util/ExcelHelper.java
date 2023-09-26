@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.EasyExcelFactory;
@@ -113,6 +114,26 @@ public class ExcelHelper {
         excelWriter.finish();
     }
 
+    /**
+     * 无模板导出excel文件
+     *
+     * @param outputStream  文件流
+     * @param excelTypeEnum 文件格式
+     * @param clazz         表头类型
+     * @param consumer      写入数据
+     * @param <T>           泛型
+     */
+    public static <T> void exportExcel(OutputStream outputStream,
+                                       ExcelTypeEnum excelTypeEnum,
+                                       Class<T> clazz,
+                                       Consumer<WriteSheetHolder> consumer) {
+        ExcelWriter excelWriter = EasyExcel.write(outputStream, clazz).excelType(excelTypeEnum).build();
+        WriteSheet writeSheet = EasyExcel.writerSheet().build();
+        WriteSheetHolder writeSheetHolder = new WriteSheetHolder(excelWriter, writeSheet);
+        consumer.accept(writeSheetHolder);
+        excelWriter.finish();
+    }
+
 
     /**
      * 指定模板导出excel文件
@@ -133,6 +154,29 @@ public class ExcelHelper {
                 .excelType(excelTypeEnum).withTemplate(templateInputStream).build();
         WriteSheet writeSheet = EasyExcel.writerSheet().build();
         excelWriter.fill(data, writeSheet);
+        excelWriter.finish();
+    }
+
+    /**
+     * 指定模板导出excel文件
+     *
+     * @param outputStream        文件流
+     * @param excelTypeEnum       文件格式
+     * @param clazz               表头类型
+     * @param templateInputStream 模板
+     * @param consumer            写入数据
+     * @param <T>                 泛型
+     */
+    public static <T> void exportExcelWithTemplate(OutputStream outputStream,
+                                                   ExcelTypeEnum excelTypeEnum,
+                                                   Class<T> clazz,
+                                                   InputStream templateInputStream,
+                                                   Consumer<FillSheetHolder> consumer) {
+        ExcelWriter excelWriter = EasyExcel.write(outputStream, clazz)
+                .excelType(excelTypeEnum).withTemplate(templateInputStream).build();
+        WriteSheet writeSheet = EasyExcel.writerSheet().build();
+        FillSheetHolder fillSheetHolder = new FillSheetHolder(excelWriter, writeSheet);
+        consumer.accept(fillSheetHolder);
         excelWriter.finish();
     }
 
