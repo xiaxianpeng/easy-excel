@@ -5,9 +5,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.example.easyexcel.listener.UserAnalysisEventListener;
 import com.example.easyexcel.model.UserModel;
 import com.example.easyexcel.util.ExcelHelper;
@@ -108,4 +114,29 @@ public class ExcelContoller {
             return "failure";
         }
     }
+
+    @GetMapping("/dynamicColumns")
+    private void dynamicColumns(String localFileName) {
+        List<List<String>> headList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            List<String> head = new ArrayList<>();
+            head.add("列" + i);
+            headList.add(head);
+        }
+
+
+        List<Map<Integer, Object>> dataList = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            Map<Integer, Object> data = new HashMap<>();
+            for (int j = 0; j < 10; j++) {
+                data.put(j, "数据" + i + "-" + j);
+            }
+            dataList.add(data);
+        }
+        String fileName = "dynamic-columns.xlsx";
+        ExcelWriter excelWriter = EasyExcel.write(fileName).head(headList).build();
+        WriteSheet writeSheet = EasyExcel.writerSheet("Sheet1").build();
+        excelWriter.write(dataList, writeSheet);
+    }
+
 }
