@@ -11,9 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.support.ExcelTypeEnum;
-import com.alibaba.excel.write.metadata.WriteSheet;
 import com.example.easyexcel.listener.UserAnalysisEventListener;
 import com.example.easyexcel.model.UserModel;
 import com.example.easyexcel.util.ExcelHelper;
@@ -134,9 +132,10 @@ public class ExcelContoller {
             dataList.add(data);
         }
         String fileName = "dynamic-columns.xlsx";
-        ExcelWriter excelWriter = EasyExcel.write(fileName).head(headList).build();
-        WriteSheet writeSheet = EasyExcel.writerSheet("Sheet1").build();
-        excelWriter.write(dataList, writeSheet);
+        EasyExcel.write(fileName)
+                .head(headList)
+                .sheet("Sheet1")
+                .doWrite(dataList);
     }
 
 }
